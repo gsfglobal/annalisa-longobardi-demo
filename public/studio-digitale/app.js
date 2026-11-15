@@ -170,7 +170,7 @@ function renderNav() {
     item('team', 'Team', 'team', r === 'team') +
     item('impostazioni', 'Impostazioni', 'gear', r === 'impostazioni');
   const rr = role();
-  $('#meBox').innerHTML = `<b>${h(S.me.name || 'Utente autorizzato')}</b>${S.isOwner ? 'Accesso completo' : h(ROLES[S.realRole])}${window.__DEMO ? '<div style="margin-top:10px"><button class="btn sm ghost light" data-act="demo-reset">Ripristina gli esempi</button></div>' : ''}${S.previewRole ? `<div style="margin-top:6px"><span class="tag plum">Anteprima: ${h(ROLES[rr])}</span> <button class="btn sm ghost" data-act="preview-off" style="margin-top:6px">Esci anteprima</button></div>` : ''}`;
+  $('#meBox').innerHTML = `<b>${h(S.me.name || 'Utente autorizzato')}</b>${S.isOwner ? 'Accesso completo' : h(ROLES[S.realRole])}${window.__DEMO ? '<div style="margin-top:10px"><button class="btn sm ghost light" data-act="demo-reset">Azzera le prove</button></div>' : ''}${S.previewRole ? `<div style="margin-top:6px"><span class="tag plum">Anteprima: ${h(ROLES[rr])}</span> <button class="btn sm ghost" data-act="preview-off" style="margin-top:6px">Esci anteprima</button></div>` : ''}`;
   const tb = (href, label, ic, on, badge) => `<a href="#${href}" class="${on ? 'on' : ''}">${ICON[ic]}<span>${label}</span>${badge ? `<i>${badge}</i>` : ''}</a>`;
   $('#tabbar').innerHTML = tb('home', 'Home', 'home', r === 'home') + tb('agenda', 'Agenda', 'cal', r === 'agenda', apOpenN) + tb('panoramica', 'Giulia', 'ai', isGiulia(r), waiting) +
     tb('avatar', 'Moduli', 'grid', ['avatar', 'social', 'gestionale'].includes(r)) + `<a href="#" data-act="menu" class="${r === 'team' || r === 'impostazioni' ? 'on' : ''}">${ICON.menu}<span>Altro</span></a>`;
@@ -222,7 +222,7 @@ function vHome() {
   return `
   ${hdr('Panoramica di Giulia', 'Telefono e WhatsApp gestiti dalla tua assistente AI, 24 ore su 24.')}
   ${anyDemo ? demoBanner('I numeri includono <b>dati sintetici di esempio</b>, marcati come tali. Nessun dato reale di pazienti.') : ''}
-  ${loaded && !cv.length && !ap.length ? `<div class="banner info">Nessun dato disponibile: i canali non sono ancora collegati.</div>` : ''}
+  ${loaded && !cv.length && !ap.length ? `<div class="banner info">Ancora nessuna conversazione: quando Giulia risponde al telefono o su WhatsApp, la trovi qui.${window.__DEMO ? ' Prova subito con la <a href="#whatsapp">chat WhatsApp di prova</a> o con la <a href="#chiamate">prova vocale</a>.' : ''}</div>` : ''}
   <div class="grid g5" style="margin-bottom:20px">
     ${kpi('Chiamate ricevute', val(calls.length), 'canale telefonico', calls.some(isDemo))}
     ${kpi('Conversazioni WhatsApp', val(wa.length), 'chat gestite', wa.some(isDemo))}
