@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@source "../components";
+@source "../lib";
+@source "../preview";
+@import "../styles/brand-tokens.css";
+@import "@fontsource/syne/500.css";
+@import "@fontsource/syne/600.css";
+@import "@fontsource/syne/700.css";
+@import "@fontsource/manrope/400.css";
+@import "@fontsource/manrope/500.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+
+@theme {
+  --color-plum: var(--brand-plum);
+  --color-black: var(--brand-black);
+  --color-ink: var(--brand-ink);
+  --color-white: var(--brand-white);
+  --color-pearl: var(--brand-pearl);
+  --color-mist: var(--brand-mist);
+  --color-line: var(--brand-line);
+  --color-grey: var(--brand-grey);
+
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", "Manrope", ui-sans-serif, sans-serif;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { @apply bg-black text-white font-sans antialiased; overflow-x: hidden; }
+  ::selection { background: var(--brand-plum); color: var(--brand-white); }
+  :focus-visible { outline: 2px solid var(--brand-white); outline-offset: 3px; }
+  .on-light :focus-visible { outline-color: var(--brand-plum); }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-[1440px] px-5 md:px-10 lg:px-14; }
+  .kicker { @apply font-sans text-[12px] font-semibold uppercase tracking-[0.24em]; }
+  .mega { @apply font-display font-bold uppercase leading-[0.86] tracking-[-0.045em]; }
+  .accent { @apply font-serif font-normal normal-case italic tracking-[-0.01em]; }
+  .body { @apply text-[16px] leading-[1.7] md:text-[17px]; }
+
+  /* Arch-shaped mask: echoes the studio's niche and the curve of the smile */
+  .arch { border-radius: 999px 999px 0 0; overflow: hidden; }
+  .arch-sm { border-radius: 400px 400px 24px 24px; overflow: hidden; }
+
+  .pill {
+    @apply relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden whitespace-nowrap rounded-full px-6
+      text-[12px] font-semibold uppercase tracking-[0.16em] transition-[color,background-color,border-color,transform,box-shadow] duration-500
+      ease-[var(--ease-lux)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98];
+  }
+  .pill-plum { @apply bg-plum text-white hover:bg-white hover:text-black; }
+  .pill-white { @apply bg-white text-black hover:bg-plum hover:text-white; }
+  .pill-line { @apply border border-white/35 text-white hover:border-white hover:bg-white hover:text-black; }
+  .pill-line-dark { @apply border border-black/30 text-black hover:border-black hover:bg-black hover:text-white; }
+
+  .tag { @apply inline-flex items-center gap-2 rounded-full border border-current px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]; }
+
+  /* Photographic reveal with a mask */
+  .rv-img { clip-path: inset(14% 0 0 0); transition: clip-path 1.5s var(--ease-lux); }
+  .rv-img.in { clip-path: inset(0 0 0 0); }
+  /* Page transition */
+  .page-in { animation: pageIn 0.9s var(--ease-lux) both; }
+  @keyframes pageIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+  /* Reveal */
+  .rv { opacity: 0; transform: translateY(32px); transition: opacity 1.2s var(--ease-lux), transform 1.2s var(--ease-lux); }
+  .rv.in { opacity: 1; transform: none; }
+  .line-mask { display: block; overflow: hidden; padding-bottom: 0.06em; }
+  .line-mask > span { display: block; transform: translateY(105%); transition: transform 1.3s var(--ease-lux); }
+  .in .line-mask > span, .line-mask.in > span { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv, .line-mask > span, .rv-img, .page-in { transition: none !important; animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important; }
+}

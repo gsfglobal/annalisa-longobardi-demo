@@ -1,0 +1,8 @@
+node_modules/
+.next/
+out/
+preview-dist/
+preview-glb-src/
+next-env.d.ts
+*.log
+.DS_Store

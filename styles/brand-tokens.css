@@ -1,0 +1,27 @@
+/*
+ * DESIGN TOKEN CROMATICI ORIGINALI — NON MODIFICARE
+ * Estratti il 15/11/2026 da annalisalongobardi.com
+ * (Elementor kit post-9.css, CSS di pagina post-2/117/120/122/135/143/200 e verifica visiva).
+ *
+ *  #843064  Prugna brand  — barra slogan, icone, sfondi sezione, before/after (kit: --e-global-color-ea485be)
+ *  #000000  Nero          — header, footer, sfondi sezione
+ *  #1D1D1D  Nero inchiostro (kit: --e-global-color-24ca5ff)
+ *  #FFFFFF  Bianco        — logo, testi su scuro, sfondi
+ *  #F0F0F0  Grigio perla  — testi su scuro (Jost)
+ *  #EEEFF0  Grigio nebbia — titoli su scuro (Urbanist)
+ *  #E8E8E8  Grigio linea  — bordi/divisori before-after
+ *  #7A7A7A  Grigio testo  — colore testo di default del kit. Contrasto 4,29:1 su bianco:
+ *                           NON conforme AA per testo piccolo → usato solo ≥ 18px o per testo decorativo.
+ *
+ * Esclusi: #6EC1E4, #61CE70, #54595F (valori di default del kit Elementor non visibili sul sito).
+ */
+:root {
+  --brand-plum: #843064;
+  --brand-black: #000000;
+  --brand-ink: #1d1d1d;
+  --brand-white: #ffffff;
+  --brand-pearl: #f0f0f0;
+  --brand-mist: #eeeff0;
+  --brand-line: #e8e8e8;
+  --brand-grey: #7a7a7a;
+}
