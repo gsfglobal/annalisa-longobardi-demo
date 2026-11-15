@@ -1,4 +1,4 @@
-/* Dati iniziali della versione dimostrativa (pubblica). Nessun dato reale di pazienti: le conversazioni sono esempi. */
+/* Dati iniziali della versione dimostrativa (pubblica). Parte vuota: compaiono solo le prove fatte in questa pagina. */
 window.__DEMO_SEED = (function () {
   const T0 = '2026-11-15T09:00:00Z';
   const SITO = 'Sito ufficiale annalisalongobardi.com';
@@ -46,31 +46,6 @@ window.__DEMO_SEED = (function () {
   store['config/studio'] = { avviso: '', email: 'annalisalongobardi@hotmail.it', operatori: ['Segreteria Napoli'], orari: 'Lun/Ven 10:00–18:00 (da confermare)', retention: 90, telefono: '081 545 3461', whatsapp: '335 841 0578', updatedAt: T0,
     sedi: [{ address: 'Piazza Medaglie d\'Oro 27, 80128 Napoli', city: 'Napoli', source: 'Sito ufficiale', state: 'verificata' }, { address: '', city: 'Roma', source: 'Solo MioDottore', state: 'in_verifica' }, { address: '', city: 'Milano', source: 'Solo MioDottore', state: 'in_verifica' }] };
 
-  // Esempi (marcati "esempio" nell'interfaccia): date relative al giorno di apertura
-  const d = (days, hh, mm) => { const x = new Date(); x.setDate(x.getDate() - days); x.setHours(hh, mm, 0, 0); return x.toISOString(); };
-  const ymd = (days) => { const x = new Date(); x.setDate(x.getDate() + days); return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`; };
-  const M = (role, text, at) => ({ role, text, at });
-  const convs = {
-    'ex-c1': { channel: 'telefono', patient: 'Chiara R.', callerNumber: '', sede: 'Napoli', topic: 'Invisalign', createdAt: d(1, 21, 14), updatedAt: d(1, 21, 17), duration: 168, summary: 'Chiede informazioni su Invisalign e lascia una richiesta di prima visita.', status: 'chiusa', labels: ['Invisalign'],
-      messages: [M('giulia', 'Buongiorno, sono Giulia, l\'assistente virtuale dello studio della Dott.ssa Annalisa Longobardi. Come posso aiutarLa?', d(1, 21, 14)), M('patient', 'Salve, vorrei informazioni sugli allineatori trasparenti.', d(1, 21, 14)), M('giulia', 'Certo. Lo studio è Diamond Apex Invisalign Provider: durata e piano si definiscono in prima visita. Vuole che registri una richiesta di appuntamento?', d(1, 21, 15)), M('patient', 'Sì, Chiara, 333 000 0000, preferibilmente martedì mattina.', d(1, 21, 16)), M('sys', 'Richiesta di appuntamento registrata in dashboard', d(1, 21, 17))], apptId: 'ex-a1' },
-    'ex-c2': { channel: 'telefono', patient: 'Marco D.', sede: 'Napoli', topic: 'Urgenza', createdAt: d(1, 8, 2), updatedAt: d(1, 8, 4), duration: 95, summary: 'Riferisce dolore e gonfiore: segnalato alla segreteria per essere richiamato.', status: 'attesa_operatore', urgent: true, labels: ['urgenza'], handoff: { at: d(1, 8, 4), reason: 'Possibile urgenza riferita al telefono' },
-      messages: [M('patient', 'Buongiorno, ho un forte dolore e la guancia gonfia da ieri sera.', d(1, 8, 2)), M('giulia', 'Mi dispiace. Per dolore forte e gonfiore la invito a chiamare lo studio al numero 081 545 3461 appena apre; se peggiora, contatti il 112. Segnalo subito la Sua chiamata alla segreteria.', d(1, 8, 3)), M('sys', 'Da richiamare: segnalata alla segreteria', d(1, 8, 4))] },
-    'ex-c3': { channel: 'telefono', patient: 'Giovanni P.', sede: 'Napoli', topic: 'Sedi', createdAt: d(2, 19, 40), updatedAt: d(2, 19, 41), duration: 52, summary: 'Chiede l\'indirizzo dello studio di Napoli.', status: 'chiusa', labels: [],
-      messages: [M('patient', 'Dove si trova lo studio?', d(2, 19, 40)), M('giulia', 'Lo studio si trova in Piazza Medaglie d\'Oro 27, a Napoli.', d(2, 19, 41))] },
-    'ex-w1': { channel: 'whatsapp', patient: 'Francesca L.', sede: 'Napoli', topic: 'Pedodonzia', createdAt: d(1, 22, 5), updatedAt: d(1, 22, 9), status: 'chiusa', labels: ['bambini'], apptId: 'ex-a2',
-      messages: [M('patient', 'Buonasera, a che età si porta un bambino dal dentista?', d(1, 22, 5)), M('giulia', 'Buonasera! Lo studio consiglia la prima visita tra i 18 e i 24 mesi. Desidera una richiesta di appuntamento?', d(1, 22, 6)), M('patient', 'Sì, per mia figlia di 2 anni. Francesca, 347 000 0000, sabato se possibile.', d(1, 22, 8)), M('giulia', 'Perfetto, ho registrato la richiesta: la segreteria La ricontatterà per confermare giorno e orario.', d(1, 22, 9)), M('sys', 'Richiesta di appuntamento registrata in dashboard', d(1, 22, 9))] },
-    'ex-w2': { channel: 'whatsapp', patient: 'Luca M.', sede: '', topic: 'Prezzi', createdAt: d(2, 13, 20), updatedAt: d(2, 13, 22), status: 'attesa_operatore', labels: ['preventivo'], handoff: { at: d(2, 13, 22), reason: 'Il paziente chiede una persona' },
-      messages: [M('patient', 'Quanto costano le faccette?', d(2, 13, 20)), M('giulia', 'Le tariffe dipendono dalla valutazione in visita, per questo non posso indicarle. Posso farla ricontattare dalla segreteria?', d(2, 13, 21)), M('patient', 'Sì, vorrei parlare con una persona.', d(2, 13, 21)), M('giulia', 'Certo. Ho segnalato la Sua richiesta alla segreteria: una persona dello studio Le risponderà appena possibile.', d(2, 13, 22)), M('sys', 'Conversazione passata alla segreteria · Giulia in pausa', d(2, 13, 22))] },
-    'ex-w3': { channel: 'whatsapp', patient: 'Sara T.', sede: 'Napoli', topic: 'Sbiancamento', createdAt: d(3, 23, 30), updatedAt: d(3, 23, 33), status: 'chiusa', labels: [], apptId: 'ex-a3',
-      messages: [M('patient', 'Fate lo sbiancamento?', d(3, 23, 30)), M('giulia', 'Sì, lo studio è Centro d\'Eccellenza BlancOne per lo sbiancamento. Desidera prenotare una visita?', d(3, 23, 31)), M('patient', 'Sì, Sara, sara@email.it, giovedì pomeriggio.', d(3, 23, 32)), M('sys', 'Richiesta di appuntamento registrata in dashboard', d(3, 23, 33))] },
-  };
-  Object.entries(convs).forEach(([id, c]) => { store['convs/' + id] = { demo: true, aiPaused: c.status === 'attesa_operatore', ...c }; });
-  const ap = {
-    'ex-a1': { channel: 'telefono', name: 'Chiara R.', contact: '333 ••• 00', sede: 'Napoli', tipo: 'Prima visita Invisalign', preferred: 'Martedì mattina', prefDate: ymd(2), status: 'ricevuta', convId: 'ex-c1', createdAt: d(1, 21, 17) },
-    'ex-a2': { channel: 'whatsapp', name: 'Francesca L.', contact: '347 ••• 00', sede: 'Napoli', tipo: 'Prima visita bambina', preferred: 'Sabato', prefDate: ymd(6), status: 'in_lavorazione', convId: 'ex-w1', createdAt: d(1, 22, 9) },
-    'ex-a3': { channel: 'whatsapp', name: 'Sara T.', contact: 'sara@•••', sede: 'Napoli', tipo: 'Sbiancamento', preferred: 'Giovedì pomeriggio', prefDate: ymd(4), status: 'confermata', convId: 'ex-w3', createdAt: d(3, 23, 33), confirm: { by: 'Segreteria', at: d(2, 10, 0) } },
-    'ex-a4': { channel: 'manuale', name: 'Paolo G.', contact: '339 ••• 00', sede: 'Napoli', tipo: 'Controllo ortodontico', preferred: 'Mercoledì 15:00', prefDate: ymd(3), status: 'confermata', createdAt: d(4, 11, 0), confirm: { by: 'Segreteria', at: d(4, 11, 0) } },
-  };
-  Object.entries(ap).forEach(([id, a]) => { store['appts/' + id] = { demo: true, assignedTo: '', updatedAt: a.createdAt, log: [{ at: a.createdAt, by: 'giulia', st: 'ricevuta' }], ...a }; });
+  // Nessuna conversazione d'esempio: compaiono solo le prove fatte dalla Dottoressa.
   return store;
 })();

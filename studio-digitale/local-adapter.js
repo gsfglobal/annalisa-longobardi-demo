@@ -1,11 +1,11 @@
 /* Versione dimostrativa pubblica: sostituisce i servizi della piattaforma con equivalenti locali.
-   - Dati: salvati solo nel browser di chi apre la pagina (localStorage), ripartono dagli esempi con "Ripristina".
+   - Dati: salvati solo nel browser di chi apre la pagina (localStorage), si azzerano con "Azzera le prove".
    - Giulia di prova: risposte d'esempio basate sulle informazioni approvate dello studio.
    - Voce: sintesi e dettatura del browser, se disponibili. */
 'use strict';
 (function () {
   window.__DEMO = true;
-  const KEY = 'al-studio-digitale-demo-v1';
+  const KEY = 'al-studio-digitale-demo-v2';
   let store;
   try { store = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { store = null; }
   if (!store) store = JSON.parse(JSON.stringify(window.__DEMO_SEED));
