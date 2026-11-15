@@ -1,7 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import { Pause, Play, Volume2, VolumeX, X } from "lucide-react";
 import { asset } from "@/lib/asset";
 import { Img } from "@/components/ui/Img";
 import { InstagramIcon, TikTokIcon } from "@/components/ui/Icons";
@@ -10,13 +11,66 @@ import { ChapterTag } from "./Chapter";
 
 const facebook = "https://www.facebook.com/AnnalisaLongobardiOdontoiatra";
 
+/**
+ * Reel TikTok ufficiali della Dott.ssa (@dr.annalisalongobardi), verificati il 15/11/2026.
+ * Le copertine sono foto del sito ufficiale; il video TikTok si carica solo al clic
+ * (nessun contenuto o cookie di terze parti prima dell'azione dell'utente).
+ */
 const reels = [
-  { k: "t-invisalign", title: "Invisalign, spiegato bene", net: "tiktok" as const },
-  { k: "studio-attesa", title: "Dentro lo studio", net: "instagram" as const },
-  { k: "t-faccette", title: "Faccette: forma e luce", net: "instagram" as const },
-  { k: "t-sbiancamento", title: "Sbiancamento professionale", net: "tiktok" as const },
-  { k: "studio-operativa-prugna", title: "Dietro le quinte", net: "instagram" as const },
+  { id: "7253067118797655323", k: "t-ortodonzia", title: "Come si toglie l'Invisalign", topic: "Invisalign" },
+  { id: "7502917477769202966", k: "t-invisalign", title: "5 motivi per gli allineatori", topic: "Invisalign" },
+  { id: "7705902834457283873", k: "t-faccette", title: "Bonding o faccette?", topic: "Estetica" },
+  { id: "7708107070691642657", k: "studio-operativa-faccette", title: "Faccette che non sembrano finte", topic: "Faccette" },
+  { id: "7705707058770873632", k: "studio-attesa", title: "La prima visita", topic: "Allineatori" },
 ];
+type Reel = (typeof reels)[number];
+const reelUrl = (id: string) => `https://www.tiktok.com/@dr.annalisalongobardi/video/${id}`;
+
+function ReelModal({ reel, onClose }: { reel: Reel; onClose: () => void }) {
+  const close = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const prev = document.activeElement as HTMLElement | null;
+    close.current?.focus();
+    const key = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", key);
+    const o = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", key);
+      document.body.style.overflow = o;
+      prev?.focus();
+    };
+  }, [onClose]);
+  // portal su <body>: sopra header, pulsante Giulia e barra mobile (fuori dagli stacking context della sezione)
+  return createPortal(
+    <div role="dialog" aria-modal="true" aria-label={`Reel: ${reel.title}`} className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md" onClick={onClose}>
+      <div className="relative flex h-full max-h-[880px] w-full max-w-[460px] flex-col" onClick={(e) => e.stopPropagation()}>
+        <div className="mb-3 flex items-center justify-between gap-3 text-white">
+          <div className="min-w-0">
+            <p className="kicker text-white/70">TikTok · @dr.annalisalongobardi</p>
+            <p className="truncate font-display text-[18px] font-bold uppercase tracking-tight">{reel.title}</p>
+          </div>
+          <button ref={close} type="button" onClick={onClose} className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/30 transition hover:bg-white hover:text-black" aria-label="Chiudi il video">
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="relative min-h-0 flex-1 overflow-hidden rounded-[24px] bg-black">
+          <iframe
+            src={`https://www.tiktok.com/player/v1/${reel.id}?autoplay=1&rel=0&music_info=0&description=1`}
+            title={`Reel TikTok: ${reel.title}`}
+            className="absolute inset-0 h-full w-full"
+            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+        <a href={reelUrl(reel.id)} target="_blank" rel="noopener" className="mt-3 self-center text-[12px] text-white/75 underline underline-offset-4 hover:text-white">
+          Apri su TikTok
+        </a>
+      </div>
+    </div>,
+    document.body,
+  );
+}
 
 function Player() {
   const v = useRef<HTMLVideoElement>(null);
@@ -80,11 +134,13 @@ function Player() {
 
 function ReelSlider() {
   const track = useRef<HTMLUListElement>(null);
+  const [open, setOpen] = useState<Reel | null>(null);
+  const closeReel = useCallback(() => setOpen(null), []);
   const move = (d: number) => track.current?.scrollBy({ left: d * (track.current.clientWidth * 0.6), behavior: "smooth" });
   return (
     <div className="relative min-w-0">
       <div className="mb-3 flex items-center justify-between">
-        <p className="kicker text-black/65">Reel verticali</p>
+        <p className="kicker text-black/65">Reel ufficiali · TikTok</p>
         <div className="flex gap-2">
           <button type="button" onClick={() => move(-1)} className="flex h-11 w-11 items-center justify-center rounded-full border border-black/25 transition hover:bg-black hover:text-white" aria-label="Reel precedenti"><ArrowLeft className="h-4 w-4" /></button>
           <button type="button" onClick={() => move(1)} className="flex h-11 w-11 items-center justify-center rounded-full border border-black/25 transition hover:bg-black hover:text-white" aria-label="Reel successivi"><ArrowRight className="h-4 w-4" /></button>
@@ -92,18 +148,27 @@ function ReelSlider() {
       </div>
       <ul ref={track} className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none]">
         {reels.map((c, n) => (
-          <li key={c.k} className={`shrink-0 snap-start ${n % 2 ? "md:mt-10" : ""}`}>
-            <a href={social[c.net].href} target="_blank" rel="noopener" className="group relative block aspect-[9/16] w-[46vw] overflow-hidden rounded-[24px] bg-black sm:w-[30vw] md:w-[200px] lg:w-[220px]">
+          <li key={c.id} className={`shrink-0 snap-start ${n % 2 ? "md:mt-10" : ""}`}>
+            <button
+              type="button"
+              onClick={() => setOpen(c)}
+              aria-label={`Guarda il reel: ${c.title}`}
+              className="group relative block aspect-[9/16] w-[46vw] overflow-hidden rounded-[24px] bg-black text-left sm:w-[30vw] md:w-[200px] lg:w-[220px]"
+            >
               <Img k={c.k} alt="" fill sizes="240px" className="object-cover opacity-90 transition-transform duration-[1.4s] ease-[var(--ease-lux)] group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-black/20" />
+              <span className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-black transition duration-500 group-hover:scale-110 group-hover:bg-plum group-hover:text-white">
+                <Play className="ml-0.5 h-5 w-5" />
+              </span>
               <div className="absolute inset-x-4 bottom-4 text-white">
-                <span className="tag mb-3 text-white/90">{c.net === "tiktok" ? <TikTokIcon className="h-3 w-3" /> : <InstagramIcon className="h-3 w-3" />} Reel da collegare</span>
+                <span className="tag mb-3 text-white/90"><TikTokIcon className="h-3 w-3" /> {c.topic}</span>
                 <p className="font-display text-[19px] font-bold uppercase leading-none tracking-tight">{c.title}</p>
               </div>
-            </a>
+            </button>
           </li>
         ))}
       </ul>
+      {open && <ReelModal reel={open} onClose={closeReel} />}
     </div>
   );
 }
@@ -142,8 +207,8 @@ export function Stories() {
           </div>
         </div>
         <p className="mt-6 max-w-3xl text-[12px] leading-5 text-black/65">
-          Le copertine usano foto del sito ufficiale come segnaposto. I Reel e i contenuti social (inclusi eventuali video con creator)
-          verranno collegati solo con l&apos;autorizzazione della dottoressa, tramite embed ufficiali o file forniti dallo studio.
+          Reel pubblicati sul profilo TikTok ufficiale @dr.annalisalongobardi. Le copertine sono foto del sito ufficiale;
+          il video viene caricato da TikTok solo quando premi play.
         </p>
       </div>
     </section>
