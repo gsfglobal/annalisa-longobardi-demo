@@ -26,6 +26,19 @@ export const contacts = {
   hours: "Lunedì – Venerdì, 10:00 – 18:00",
 };
 
+/**
+ * Giulia — assistente virtuale (AI) su WhatsApp. Numero di PROVA Dental Go (081 1929 7944),
+ * collegato all'agente ElevenLabs della Dottoressa e alla dashboard. Va sostituito con il
+ * numero definitivo dello studio prima della pubblicazione reale.
+ */
+export const giulia = {
+  name: "Giulia",
+  role: "Assistente virtuale dello studio",
+  number: "3908119297944",
+  greeting: "Ciao Giulia, vorrei informazioni sullo studio della Dott.ssa Longobardi.",
+};
+export const giuliaHref = `https://wa.me/${giulia.number}?text=${encodeURIComponent(giulia.greeting)}`;
+
 export const social = {
   instagram: {
     handle: "@dott.ssa_annalisa_longobardi",

@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileCTA } from "@/components/layout/MobileCTA";
+import { GiuliaButton } from "@/components/layout/GiuliaButton";
 import { RevealObserver } from "@/components/ui/Reveal";
 import { SITE_URL } from "@/lib/site";
 import { BASE } from "@/lib/asset";
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <MobileCTA />
+        <GiuliaButton />
         <RevealObserver />
         {!IS_DEMO && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dentistJsonLd()) }} />}
       </body>
